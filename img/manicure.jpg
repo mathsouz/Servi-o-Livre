@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <title>
+ Untitled Document
+ </title>
+ <style type="text/css">
+ body {
+ height: 100%;
+ font-family: Arial, sans-serif;
+ color: #525252;
+ background-color: #ffffff;
+ margin: 0;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+ 
+ .form-container {
+ background: #F5F5F5;
+ border-radius: 12px;
+ 
+ border:1px solid #444;
+ 
+ }
+ .form-container a {
+ color: #ADB5BD;
+ text-align: center;
+ font-size: 16px;
+ font-style: normal;
+ font-weight: 400;
+ text-decoration: underline;
+ }
+ 
+ .form-container button.primary {
+ display: block;
+ width: 100%;
+ height: 50px;
+ padding: 12px;
+ justify-content: center;
+ align-items: center;
+ gap: 8px;
+ align-self: stretch;
+ color: #FFF;
+ font-size: 16px;
+ font-weight: 600;
+ cursor: pointer;
+ border-radius: 6px;
+ background: #ADB5BD;
+ border: none;
+ margin-top: 32px;
+ }
+ .form-container button.primary:hover {
+ border-radius: 4px;
+ background: #4E4E4E;
+ height: 50px;
+ padding: 12px;
+ justify-content: center;
+ align-items: center;
+ color: #FFF;
+ }
+ .form-container button {
+ display: block;
+ width: 100%;
+ height: 50px;
+ padding: 12px;
+ justify-content: center;
+ align-items: center;
+ gap: 8px;
+ align-self: stretch;
+ color: #4E4E4E;
+ font-size: 16px;
+ font-weight: 600;
+ cursor: pointer;
+ border-radius: 6px;
+ border:1px solid #4E4E4E;
+ margin-top: 32px;
+ }
+ .form-container button:hover {
+ border-radius: 4px;
+ background: #4E4E4E;
+ height: 50px;
+ padding: 12px;
+ justify-content: center;
+ align-items: center;
+ color: #FFF;
+ }
+ .box-titulo {
+ border-radius: 12px 12px 0px 0px;
+ display: flex;
+ padding: 20px;
+ color: #fff;
+ align-self: stretch;
+ background: #444;
+ text-transform: none;
+ }
+ .box-titulo h1{
+ margin: 0px;
+ }
+ </style>
+ </head>
+ 
+ <body style="text-align:center">
+ <div class="form-container">
+ <div class="box-titulo">
+ <h1>
+ Página Web Bloqueada
+ </h1>
+ </div>
+ <div style="padding: 20px;">
+ <p>
+ <br />
+ Você tentou acessar uma página da web que viola sua política de uso da Internet.
+ <br />
+ <br />
+ 
+ URL: images.unsplash.com/?auto=format&fit=crop&w=1200&q=80
+ <br />
+ Category: File Sharing and Storage
+ <br />
+ <br />
+ 
+ Qualquer dúvida entrar em contato com o suporte. 
+ </p>
+ </div>
+ </div>
+ </body>
+</html>

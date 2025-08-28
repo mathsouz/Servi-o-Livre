@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serviço Livre</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="sl-header">
+        <div class="header-inner">
+            <div class="brand">
+                <img src="img/20250828_0848_Logo Mercado Serviços_simple_compose_01k3r829bdepgtt6e0ww4y9am4.png" alt="Serviço Livre" class="logo-img" />
+            </div>
+            <form class="search" id="searchForm" role="search" aria-label="Buscar serviços">
+                <input type="text" id="searchInput" placeholder="Buscar serviços" aria-label="Campo de busca" />
+                <button type="submit" aria-label="Buscar">🔍</button>
+            </form>
+            <nav class="quick-links" aria-label="Atalhos">
+                <a href="#" id="qlOfertas" class="ql-item" aria-label="Ofertas" aria-pressed="false">% Ofertas</a>
+                <a href="#" id="qlAjuda" class="ql-item" aria-label="Ajuda">❓ Ajuda</a>
+                <a href="#" id="qlConta" class="ql-item" aria-label="Conta">👤 Conta</a>
+            </nav>
+        </div>
+        <div class="subnav">
+            <button class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filters">Categorias</button>
+            <div class="sort" aria-label="Ordenação">
+                <label for="sortSelect">Ordenar:</label>
+                <select id="sortSelect">
+                    <option value="relevancia">Relevância</option>
+                    <option value="preco-asc">Menor preço</option>
+                    <option value="preco-desc">Maior preço</option>
+                    <option value="nome-asc">Nome (A-Z)</option>
+                    <option value="nome-desc">Nome (Z-A)</option>
+                </select>
+                <button id="clearFilters" class="btn-reset" type="button" aria-label="Limpar filtros e busca">Limpar</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="sl-main">
+        <aside class="filters" id="filters" aria-label="Filtros de categoria">
+            <h2>Categorias</h2>
+            <ul id="categoryList">
+                <!-- Populado dinamicamente -->
+            </ul>
+        </aside>
+        <section class="results" aria-live="polite">
+            <div class="results-info">
+                <span id="resultsCount">0 resultados</span>
+            </div>
+            <div class="cards-grid" id="cardsGrid">
+                <!-- Cards injetados via JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="sl-footer">
+        <div class="footer-inner">
+            <nav aria-label="Rodapé">
+                <a href="#">Sobre</a>
+                <a href="#">Termos e condições</a>
+                <a href="#">Privacidade</a>
+                <a href="#">Contato</a>
+            </nav>
+            <p>© 2025 Serviço Livre. Inspirado na experiência do Mercado Livre.</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+        <div class="modal-backdrop" id="helpBackdrop"></div>
+        <div class="modal-content" role="document">
+            <button class="modal-close" id="helpClose" aria-label="Fechar ajuda">×</button>
+            <h2 id="helpTitle">Como podemos ajudar?</h2>
+            <p>Use a busca para encontrar serviços. Filtre por categoria no painel lateral. Clique em % Ofertas para ver serviços com desconto.</p>
+            <ul>
+                <li>Pagamento e segurança</li>
+                <li>Cadastro e contas</li>
+                <li>Solicitar suporte</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" hidden>
+        <div class="modal-backdrop" id="loginBackdrop"></div>
+        <div class="modal-content" role="document">
+            <button class="modal-close" id="loginClose" aria-label="Fechar login">×</button>
+            <h2 id="loginTitle">Entrar</h2>
+            <form id="loginForm">
+                <div class="field">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com" required />
+                </div>
+                <div class="field">
+                    <label for="loginSenha">Senha</label>
+                    <input type="password" id="loginSenha" placeholder="••••••••" required />
+                </div>
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
