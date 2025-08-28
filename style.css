@@ -313,6 +313,13 @@ html, body {
   border-radius: 6px;
   font-size: 14px;
 }
+.field select {
+  padding: 10px 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+}
 .btn-primary {
   background: var(--blue);
   color: #fff;
@@ -321,6 +328,10 @@ html, body {
   padding: 10px 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.card .btn-primary {
+  justify-self: start;
 }
 
 /* Responsividade */

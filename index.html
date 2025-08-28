@@ -103,6 +103,36 @@
         </div>
     </div>
 
+    <div class="modal" id="buyModal" role="dialog" aria-modal="true" aria-labelledby="buyTitle" hidden>
+        <div class="modal-backdrop" id="buyBackdrop"></div>
+        <div class="modal-content" role="document">
+            <button class="modal-close" id="buyClose" aria-label="Fechar compra">×</button>
+            <h2 id="buyTitle">Finalizar compra</h2>
+            <p id="buyItem" style="margin:6px 0 14px; font-weight:600;"></p>
+            <form id="buyForm">
+                <div class="field">
+                    <label for="clienteNome">Seu nome</label>
+                    <input type="text" id="clienteNome" placeholder="Nome completo" required />
+                </div>
+                <div class="field">
+                    <label for="dataServico">Data desejada</label>
+                    <input type="date" id="dataServico" required />
+                </div>
+                <div class="field">
+                    <label for="pagamentoMetodo">Método de pagamento</label>
+                    <select id="pagamentoMetodo" required>
+                        <option value="">Selecione...</option>
+                        <option value="pix">PIX</option>
+                        <option value="cartao">Cartão de crédito</option>
+                        <option value="debito">Cartão de débito</option>
+                        <option value="dinheiro">Dinheiro</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Confirmar compra</button>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

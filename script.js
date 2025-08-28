@@ -1,4 +1,24 @@
-// Catálogo de serviços (mock)
+/*
+ Organização geral do arquivo (script.js)
+ - Dados (catálogo): array `servicos` com objetos representando cada serviço
+ - Estado e referências de elementos (termoBusca, categoriaAtiva, etc.)
+ - Utilitários: formatação de preço, geração de placeholder SVG por categoria
+ - Lógica de ordenação e filtragem (aplicada sempre que busca/filtro/ordenar muda)
+ - Renderização dos cards (cria DOM dos cards de forma dinâmica)
+ - UI de categorias (popular lista à esquerda)
+ - Eventos de busca, filtros, ordenação, quick-links (Ofertas, Ajuda) e Login fictício
+ */
+
+/**
+ * Catálogo de serviços (mock)
+ * Cada item possui:
+ * - nome: string — título do serviço
+ * - descricao: string — descrição curta
+ * - categoria: 'Educação' | 'Tecnologia' | 'Beleza' | 'Casa' — usada em filtros
+ * - preco: number — valor numérico em BRL (usado na ordenação por preço)
+ * - imagem: string — caminho/URL da imagem do serviço
+ * - oferta?: boolean — quando true, o serviço aparece no filtro de “% Ofertas”
+ */
 const servicos = [
   { nome: "Aula de Violão", descricao: "Professor particular de violão", categoria: "Educação", preco: 50, imagem: "img/violao.jpg", oferta: true },
   { nome: "Manutenção de Computadores", descricao: "Formatação e upgrades", categoria: "Tecnologia", preco: 120, imagem: "img/pc.jpg" },
@@ -12,6 +32,8 @@ const servicos = [
 ];
 
 // Estado e elementos
+// termBusca/categoriaAtiva/ordenacao/somenteOfertas controlam o resultado exibido.
+// Referências de elementos DOM são cacheadas para melhor performance e clareza.
 let termoBusca = "";
 let categoriaAtiva = "Todas";
 let ordenacao = "relevancia";
@@ -38,8 +60,20 @@ const loginClose = document.getElementById('loginClose');
 const loginForm = document.getElementById('loginForm');
 const loginEmail = document.getElementById('loginEmail');
 const loginSenha = document.getElementById('loginSenha');
+// Compra
+const buyModal = document.getElementById('buyModal');
+const buyBackdrop = document.getElementById('buyBackdrop');
+const buyClose = document.getElementById('buyClose');
+const buyForm = document.getElementById('buyForm');
+const buyItem = document.getElementById('buyItem');
+const clienteNome = document.getElementById('clienteNome');
+const dataServico = document.getElementById('dataServico');
+const pagamentoMetodo = document.getElementById('pagamentoMetodo');
+let servicoSelecionado = null;
 
 // Utils
+// formatarPreco: formata número em moeda BRL.
+// obterCategorias: deriva lista única de categorias a partir do catálogo.
 function formatarPreco(valor) {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
@@ -80,6 +114,7 @@ function gerarPlaceholderSVG(servico) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
+// aplicarOrdenacao: retorna uma nova lista ordenada conforme a opção selecionada.
 function aplicarOrdenacao(lista) {
   const arr = [...lista];
   switch (ordenacao) {
@@ -96,6 +131,7 @@ function aplicarOrdenacao(lista) {
   }
 }
 
+// filtrarServicos: aplica busca, categoria e (quando ativo) filtro de ofertas.
 function filtrarServicos() {
   const termo = termoBusca.trim().toLowerCase();
   let lista = servicos.filter(s => {
@@ -108,6 +144,7 @@ function filtrarServicos() {
   return lista;
 }
 
+// criarCard: monta o card do serviço com imagem (ou placeholder), preço e metadados.
 function criarCard(servico) {
   const card = document.createElement('article');
   card.className = 'card';
@@ -156,8 +193,27 @@ function criarCard(servico) {
   content.appendChild(desc);
   content.appendChild(cat);
 
+  // CTA explícito
+  const cta = document.createElement('button');
+  cta.className = 'btn-primary';
+  cta.type = 'button';
+  cta.style.marginTop = '8px';
+  cta.textContent = 'Contratar';
+  cta.addEventListener('click', (e) => {
+    e.stopPropagation();
+    abrirCompra(servico);
+  });
+  content.appendChild(cta);
+
   card.appendChild(thumb);
   card.appendChild(content);
+
+  // Clique no card também abre compra
+  card.addEventListener('click', (e) => {
+    // Evita duplo clique quando o botão já tratou
+    if (e.target === cta) return;
+    abrirCompra(servico);
+  });
   return card;
 }
 
@@ -168,6 +224,7 @@ function render() {
   resultsCount.textContent = `${lista.length} resultado${lista.length !== 1 ? 's' : ''}`;
 }
 
+// popularCategorias: preenche o menu lateral com as categorias existentes.
 function popularCategorias() {
   const categorias = obterCategorias();
   categoryList.innerHTML = '';
@@ -189,22 +246,26 @@ function popularCategorias() {
 }
 
 // Eventos
+// Envio do formulário de busca: previne reload e renderiza com o termo digitado
 searchForm.addEventListener('submit', (e) => {
   e.preventDefault();
   termoBusca = searchInput.value;
   render();
 });
 
+// Busca em tempo real: filtra conforme o usuário digita
 searchInput.addEventListener('input', (e) => {
   termoBusca = e.target.value;
   render();
 });
 
+// Alteração da ordenação: re-renderiza com a ordem selecionada
 sortSelect.addEventListener('change', (e) => {
   ordenacao = e.target.value;
   render();
 });
 
+// Toggle do painel de filtros laterais (mobile)
 filterToggle.addEventListener('click', () => {
   const isOpen = filtersAside.classList.toggle('open');
   filterToggle.setAttribute('aria-expanded', String(isOpen));
@@ -230,6 +291,7 @@ if (clearFilters) {
 
 // Quick links
 
+// Botão % Ofertas no header: ativa/desativa filtro para exibir apenas itens com oferta
 if (qlOfertas) {
   qlOfertas.addEventListener('click', (e) => {
     e.preventDefault();
@@ -240,22 +302,26 @@ if (qlOfertas) {
   });
 }
 
+// Abrir modal de Ajuda
 function abrirAjuda() {
   if (!helpModal) return;
   helpModal.hidden = false;
 }
 
+// Fechar modal de Ajuda
 function fecharAjuda() {
   if (!helpModal) return;
   helpModal.hidden = true;
 }
 
+// Clique em "❓ Ajuda": abre modal
 if (qlAjuda) {
   qlAjuda.addEventListener('click', (e) => {
     e.preventDefault();
     abrirAjuda();
   });
 }
+// Fecha ajuda ao clicar no backdrop, no X ou pressionar Esc
 if (helpBackdrop) helpBackdrop.addEventListener('click', fecharAjuda);
 if (helpClose) helpClose.addEventListener('click', fecharAjuda);
 document.addEventListener('keydown', (e) => {
@@ -266,6 +332,7 @@ document.addEventListener('keydown', (e) => {
 function abrirLogin() { if (loginModal) loginModal.hidden = false; }
 function fecharLogin() { if (loginModal) loginModal.hidden = true; }
 
+// Clique em "👤 Conta": se logado, faz logout; senão, abre modal de login
 if (qlConta) {
   qlConta.addEventListener('click', (e) => {
     e.preventDefault();
@@ -280,8 +347,10 @@ if (qlConta) {
     }
   });
 }
+// Fechamento do modal de login
 if (loginBackdrop) loginBackdrop.addEventListener('click', fecharLogin);
 if (loginClose) loginClose.addEventListener('click', fecharLogin);
+// Submit do login: simula autenticação e persiste no localStorage
 if (loginForm) {
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -304,6 +373,44 @@ try {
     if (u?.nome && qlConta) qlConta.textContent = `Olá, ${u.nome}`;
   }
 } catch {}
+
+// Compra
+function abrirCompra(servico) {
+  servicoSelecionado = servico;
+  if (buyItem) buyItem.textContent = `${servico.nome} — ${formatarPreco(servico.preco)}`;
+  // Reseta campos
+  if (clienteNome) clienteNome.value = '';
+  if (dataServico) {
+    const hoje = new Date();
+    const yyyy = hoje.getFullYear();
+    const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoje.getDate()).padStart(2, '0');
+    dataServico.min = `${yyyy}-${mm}-${dd}`;
+    dataServico.value = '';
+  }
+  if (pagamentoMetodo) pagamentoMetodo.value = '';
+  if (buyModal) buyModal.hidden = false;
+}
+
+function fecharCompra() {
+  if (buyModal) buyModal.hidden = true;
+}
+
+if (buyBackdrop) buyBackdrop.addEventListener('click', fecharCompra);
+if (buyClose) buyClose.addEventListener('click', fecharCompra);
+if (buyForm) {
+  buyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!servicoSelecionado) return;
+    const nome = clienteNome?.value?.trim();
+    const data = dataServico?.value;
+    const metodo = pagamentoMetodo?.value;
+    if (!nome || !data || !metodo) return;
+    // Simula confirmação
+    alert(`Compra confirmada!\n\nServiço: ${servicoSelecionado.nome}\nPreço: ${formatarPreco(servicoSelecionado.preco)}\nCliente: ${nome}\nData: ${data}\nPagamento: ${metodo.toUpperCase()}`);
+    fecharCompra();
+  });
+}
 
 // Inicialização
 popularCategorias();
